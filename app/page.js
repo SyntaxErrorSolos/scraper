@@ -8,7 +8,7 @@ export default function Home() {
     const link = document.getElementById("link");
     const enterButton = document.getElementById("button");
     const h1 = document.getElementById("h1");
-    enterButton.addEventListener("click", () => {
+    enterButton.addEventListener("click", async () => {
       const val = link.value;
       const pattern =
         /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;
@@ -16,6 +16,17 @@ export default function Home() {
         h1.innerText = "No URL provided!!";
       }
       if (pattern.test(val) === true) {
+        const url = "http://localhost:3001/scrape";
+        await fetch(url, {
+          method: "GET", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, *cors, same-origin
+          headers: {
+            urls: val,
+          },
+        })
+          .then((response) => response.text())
+          .then((html) => alert(html));
+        //yes i shamelessly copied this from mozilla's example. cry about it.
       } else return (h1.innerText = "Invalid URL!");
     });
   }, []);
